@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>НЕ-СЛОЖНОСТИ • мобильная</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: #1e2b3a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+            padding: 8px;
+        }
+        .game-mobile {
+            max-width: 480px;
+            width: 100%;
+            background: #efe3d2;
+            background: linear-gradient(145deg, #f7ede0 0%, #e2d0b8 100%);
+            border-radius: 40px 40px 32px 32px;
+            padding: 20px 18px 28px;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.7), 0 0 0 3px #b28f5a, 0 0 0 7px #645138 inset;
+            border: 2px solid #4f3c22;
+        }
+        .title-mob {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-align: center;
+            color: #1c2c42;
+            text-shadow: 2px 2px 0 #c5a36b, 4px 4px 0 rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+            margin-bottom: 5px;
+        }
+        .sub-mob {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: #2e4a5c;
+            color: #fbeed7;
+            padding: 8px 20px;
+            border-radius: 40px;
+            display: inline-block;
+            margin: 0 auto 15px;
+            border: 2px solid #f3c58b;
+            box-shadow: 0 5px 0 #1b3340;
+            width: fit-content;
+        }
+        /* статистика */
+        .stats-mob {
+            background: #332c1d;
+            border-radius: 50px;
+            padding: 12px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #dba55c;
+            box-shadow: 0 7px 0 #1b1610;
+            margin-bottom: 20px;
+            gap: 8px;
+        }
+        .stat-mob-item {
+            background: #554b34;
+            border-radius: 40px;
+            padding: 6px 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fad898;
+            border: 2px solid #efc489;
+            box-shadow: inset 0 2px 5px #1e1a10;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .stat-mob-item span {
+            color: #fff2cf;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-left: 5px;
+        }
+        .mistake-mob {
+            background: #712e2e;
+            border-color: #ffa07a;
+            color: #ffd3b5;
+        }
+        /* карточка вопроса */
+        .quest-mob {
+            background: #bf9e72;
+            border-radius: 48px 48px 30px 30px;
+            padding: 20px 16px;
+            border: 4px solid #734f28;
+            box-shadow: 0 10px 0 #4f3a1e, inset 0 2px 20px #f5ddb5;
+            margin-bottom: 20px;
+        }
+        .sentence-mob {
+            background: #fcf3e0;
+            border-radius: 36px;
+            padding: 28px 16px;
+            font-size: 1.7rem;
+            font-weight: 600;
+            line-height: 1.5;
+            border: 3px solid #a47b48;
+            box-shadow: inset 0 5px 10px #b18b57;
+            color: #1f1a10;
+            word-break: break-word;
+            text-align: center;
+        }
+        .highlight-ne-mob {
+            background: #dbb16a;
+            border-radius: 24px;
+            padding: 6px 18px;
+            font-weight: 800;
+            font-size: 2.2rem;
+            color: #2f0f63;
+            text-decoration: underline wavy #c44f1e;
+            display: inline-block;
+            margin: 0 4px;
+            border: 2px solid #c0862b;
+            line-height: 1.3;
+        }
+        .speech-mob {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-top: 15px;
+            background: #395d77;
+            padding: 7px 16px;
+            border-radius: 40px;
+            display: inline-block;
+            color: white;
+            border: 2px solid #ffcd87;
+            font-weight: 600;
+            width: auto;
+        }
+        /* кнопки выбора (огромные, пальцеориентированные) */
+        .answers-mob {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin: 20px 0 18px;
+        }
+        .option-mob {
+            border: none;
+            background: #baa17d;
+            font-size: 2.2rem;
+            font-weight: 800;
+            padding: 22px 20px;
+            border-radius: 70px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.04s linear;
+            border-bottom: 10px solid #7a623f;
+            border-right: 6px solid #9b804f;
+            box-shadow: 0 12px 0 #544026, 0 15px 20px rgba(0,0,0,0.5);
+            color: #171007;
+            letter-spacing: 1.5px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .option-mob:active {
+            transform: translateY(7px);
+            border-bottom-width: 4px;
+            box-shadow: 0 5px 0 #3d2f1c, 0 12px 18px black;
+        }
+        .option-mob.merge-mob {
+            background: #9dc09d;
+            border-bottom-color: #2d692d;
+            border-right-color: #4c914c;
+            color: #003d00;
+        }
+        .option-mob.split-mob {
+            background: #e2adad;
+            border-bottom-color: #a13d3d;
+            border-right-color: #c76363;
+            color: #4d0e0e;
+        }
+        .option-mob:disabled {
+            opacity: 0.5;
+            transform: translateY(6px);
+            border-bottom-width: 4px;
+            pointer-events: none;
+        }
+        /* подсветка правильного / неправильного (добавляем через js классы) */
+        .option-mob.correct-highlight {
+            background: #7fc07f;
+            border-bottom-color: #196319;
+            box-shadow: 0 0 15px #71d171;
+        }
+        .option-mob.wrong-highlight {
+            background: #db8b8b;
+            border-bottom-color: #aa2b2b;
+            text-decoration: line-through wavy #410000;
+        }
+        /* фидбек */
+        .feedback-mob {
+            background: #ccb48c;
+            border-radius: 50px;
+            padding: 22px 16px;
+            margin: 20px 0 18px;
+            border: 5px solid #896e42;
+            box-shadow: inset 0 0 20px #aa8858;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            font-weight: 500;
+            min-height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .rule-mob {
+            background: #244352;
+            color: #fae6c9;
+            padding: 16px 12px;
+            border-radius: 40px;
+            font-size: 1.3rem;
+            text-align: center;
+            border: 3px solid #ffbc6e;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        /* нижняя панель кнопок */
+        .nav-mob {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .nav-btn-mob {
+            border: none;
+            background: #386582;
+            font-size: 1.7rem;
+            font-weight: 700;
+            padding: 16px 25px;
+            border-radius: 50px;
+            border-bottom: 8px solid #1d4057;
+            border-right: 5px solid #2d6385;
+            color: white;
+            cursor: pointer;
+            transition: 0.04s linear;
+            box-shadow: 0 10px 0 #193445, 0 12px 18px black;
+            flex: 1 1 0;
+            min-width: 140px;
+            touch-action: manipulation;
+        }
+        .nav-btn-mob.reset-mob {
+            background: #9e7d56;
+            border-bottom-color: #6f512f;
+            border-right-color: #946d40;
+        }
+        .nav-btn-mob:active {
+            transform: translateY(6px);
+            border-bottom-width: 3px;
+            box-shadow: 0 4px 0 #112d3b, 0 10px 15px black;
+        }
+        .nav-btn-mob:disabled {
+            opacity: 0.3;
+            transform: translateY(5px);
+            border-bottom-width: 4px;
+            pointer-events: none;
+        }
+        /* маленькая адаптация для очень узких */
+        @media (max-width: 380px) {
+            .title-mob { font-size: 1.9rem; }
+            .sentence-mob { font-size: 1.5rem; }
+            .option-mob { font-size: 1.9rem; padding: 18px; }
+            .stat-mob-item { font-size: 1rem; }
+            .stat-mob-item span { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="game-mobile">
+    <div class="title-mob">✴️ НЕ-СЛОЖНОСТИ</div>
+    <div class="sub-mob">СЛИТНО или РАЗДЕЛЬНО?</div>
+
+    <!-- статус-бар мобильный -->
+    <div class="stats-mob">
+        <div class="stat-mob-item">⭐ <span id="scoreMob">0</span></div>
+        <div class="stat-mob-item">📋 <span id="currentMob">1</span>/<span id="totalMob">15</span></div>
+        <div class="stat-mob-item mistake-mob">❌ <span id="mistakeMob">0</span></div>
+    </div>
+
+    <!-- вопрос -->
+    <div class="quest-mob">
+        <div class="sentence-mob" id="sentenceMob">(НЕ)приятный разговор</div>
+        <div class="speech-mob" id="speechMob">прилагательное</div>
+    </div>
+
+    <!-- две большие кнопки (пальцем тыкать удобно) -->
+    <div class="answers-mob">
+        <button class="option-mob merge-mob" id="mergeMob">🔗 СЛИТНО</button>
+        <button class="option-mob split-mob" id="splitMob">✂️ РАЗДЕЛЬНО</button>
+    </div>
+
+    <!-- фидбек-область -->
+    <div class="feedback-mob" id="feedbackMob">🔍 Нажми на кнопку</div>
+    <div class="rule-mob" id="ruleMob">👆 правило появится после ответа</div>
+
+    <!-- навигация -->
+    <div class="nav-mob">
+        <button class="nav-btn-mob" id="nextMob" disabled>⏩ ДАЛЬШЕ</button>
+        <button class="nav-btn-mob reset-mob" id="resetMob">🔄 ЗАНОВО</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---- вопросы (те же сложные, но адаптированные) ----
+        const questions = [
+            {
+                sentence: 'Это был (не)приятный разговор.',
+                part: 'прилагательное (полное)',
+                correct: 'merge',
+                explanation: 'НЕПРИЯТНЫЙ — слитно, можно заменить синонимом "грубый".',
+                rule: 'С полными прилагательными слитно, если есть синоним без НЕ.'
+            },
+            {
+                sentence: 'Он (не)мог уснуть до утра.',
+                part: 'глагол',
+                correct: 'split',
+                explanation: 'НЕ МОГ — глагол, раздельно.',
+                rule: 'НЕ с глаголами пишется раздельно (кроме слов-исключений).'
+            },
+            {
+                sentence: 'Это (не)правда, а откровенная ложь.',
+                part: 'существительное (противопост.)',
+                correct: 'split',
+                explanation: 'НЕ ПРАВДА, А ЛОЖЬ — есть противопоставление с А, раздельно.',
+                rule: 'НЕ с существительными раздельно при противопоставлении с А.'
+            },
+            {
+                sentence: 'Он поступил (не)лепо.',
+                part: 'наречие (без НЕ не употр.)',
+                correct: 'merge',
+                explanation: 'НЕЛЕПО — без НЕ не употребляется, слитно.',
+                rule: 'Если слово без НЕ не употребляется — пиши слитно.'
+            },
+            {
+                sentence: 'Вовсе (не)интересная книга.',
+                part: 'прилагательное (с вовсе)',
+                correct: 'split',
+                explanation: 'ВОВСЕ НЕ ИНТЕРЕСНАЯ — слово "вовсе" усиливает отрицание, раздельно.',
+                rule: 'Есть слова-усилители: вовсе не, далеко не, отнюдь не — раздельно.'
+            },
+            {
+                sentence: '(Не)счастье, а беда постигла нас.',
+                part: 'существительное (противоп.)',
+                correct: 'split',
+                explanation: 'НЕ СЧАСТЬЕ, А БЕДА — противопоставление с А, раздельно.',
+                rule: 'Противопоставление с союзом А = раздельно.'
+            },
+            {
+                sentence: 'Он (не)ряха и неряшливо одет.',
+                part: 'существительное (без НЕ)',
+                correct: 'merge',
+                explanation: 'НЕРЯХА — без НЕ не употребляется, слитно.',
+                rule: 'Существительные, которые без НЕ не употребляются, пишутся слитно.'
+            },
+            {
+                sentence: 'Мы (не)были в театре.',
+                part: 'глагол',
+                correct: 'split',
+                explanation: 'НЕ БЫЛИ — всегда раздельно.',
+                rule: 'Глаголы с НЕ пишутся раздельно.'
+            },
+            {
+                sentence: '(Не)смотря на дождь, пошли гулять.',
+                part: 'предлог (производный)',
+                correct: 'merge',
+                explanation: 'НЕСМОТРЯ НА — предлог (уступка), слитно.',
+                rule: 'Предлог "несмотря на" пишется слитно.'
+            },
+            {
+                sentence: 'Он шёл, (не)смотря по сторонам.',
+                part: 'деепричастие',
+                correct: 'split',
+                explanation: 'НЕ СМОТРЯ — деепричастие, раздельно.',
+                rule: 'НЕ с деепричастиями раздельно (кроме исключений).'
+            },
+            {
+                sentence: '(Не)выполненное вовремя задание.',
+                part: 'причастие (+зав.слово)',
+                correct: 'split',
+                explanation: 'НЕ ВЫПОЛНЕННОЕ ВОВРЕМЯ — есть зависимое слово, раздельно.',
+                rule: 'Полные причастия с зависимыми словами пишутся с НЕ раздельно.'
+            },
+            {
+                sentence: 'Задание (не)выполнено.',
+                part: 'краткое причастие',
+                correct: 'split',
+                explanation: 'НЕ ВЫПОЛНЕНО — краткое причастие, всегда раздельно.',
+                rule: 'Краткие причастия с НЕ пишутся раздельно.'
+            },
+            {
+                sentence: 'Это (не)красивый, но уютный дом.',
+                part: 'прилагательное (без А)',
+                correct: 'merge',
+                explanation: 'НЕКРАСИВЫЙ — нет противопоставления с А, можно заменить синонимом.',
+                rule: 'Слитно, если нет противопоставления с А и есть синоним.'
+            },
+            {
+                sentence: 'Отнюдь (не)простое решение.',
+                part: 'прилагательное (отнюдь)',
+                correct: 'split',
+                explanation: 'ОТНЮДЬ НЕ ПРОСТОЕ — раздельно из-за "отнюдь".',
+                rule: 'Слова отнюдь не, далеко не, вовсе не требуют раздельного написания.'
+            },
+            {
+                sentence: '(Не)годующий взгляд.',
+                part: 'причастие (без НЕ)',
+                correct: 'merge',
+                explanation: 'НЕГОДУЮЩИЙ — без НЕ не употребляется, слитно.',
+                rule: 'Причастия, не употребляющиеся без НЕ, пишутся слитно.'
+            }
+        ];
+
+        // --- состояние ---
+        let currentIdx = 0;
+        let score = 0;
+        let mistakes = 0;
+        let answered = false;
+        const total = questions.length;
+
+        // --- DOM элементы ---
+        const sentenceMob = document.getElementById('sentenceMob');
+        const speechMob = document.getElementById('speechMob');
+        const scoreMob = document.getElementById('scoreMob');
+        const currentMob = document.getElementById('currentMob');
+        const totalMob = document.getElementById('totalMob');
+        const mistakeMob = document.getElementById('mistakeMob');
+        const mergeMob = document.getElementById('mergeMob');
+        const splitMob = document.getElementById('splitMob');
+        const nextMob = document.getElementById('nextMob');
+        const resetMob = document.getElementById('resetMob');
+        const feedbackMob = document.getElementById('feedbackMob');
+        const ruleMob = document.getElementById('ruleMob');
+
+        totalMob.textContent = total;
+
+        // --- функция отрисовки ---
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            // выделить (не) жирно, но можно просто текст (на телефоне и так видно)
+            sentenceMob.innerHTML = q.sentence.replace(/\(не\)/gi, '<span class="highlight-ne-mob">(НЕ)</span>');
+            speechMob.textContent = `📌 ${q.part}`;
+            // сброс подсветок и disabled
+            mergeMob.disabled = false;
+            splitMob.disabled = false;
+            mergeMob.classList.remove('correct-highlight', 'wrong-highlight');
+            splitMob.classList.remove('correct-highlight', 'wrong-highlight');
+
+            answered = false;
+            nextMob.disabled = true;
+
+            // обновить счётчики
+            scoreMob.textContent = score;
+            currentMob.textContent = currentIdx + 1;
+            mistakeMob.textContent = mistakes;
+
+            // сбросить фидбек (но оставить стандартный)
+            feedbackMob.innerHTML = '🔍 Выбери: СЛИТНО или РАЗДЕЛЬНО?';
+            ruleMob.innerHTML = '👆 правило после ответа';
+        }
+
+        // --- обработка ответа ---
+        function handleAnswer(choice) {
+            if (answered) return;
+
+            const q = questions[currentIdx];
+            const isCorrect = (choice === q.correct);
+
+            // подсветка кнопок (правильный вариант всегда горит зелёным, неправильный — красным)
+            if (q.correct === 'merge') {
+                mergeMob.classList.add('correct-highlight');
+                if (!isCorrect) splitMob.classList.add('wrong-highlight');
+            } else {
+                splitMob.classList.add('correct-highlight');
+                if (!isCorrect) mergeMob.classList.add('wrong-highlight');
+            }
+
+            if (isCorrect) {
+                score++;
+                feedbackMob.innerHTML = `✅ Верно!<br>${q.explanation}`;
+            } else {
+                mistakes++;
+                feedbackMob.innerHTML = `❌ Ошибка.<br>${q.explanation}`;
+            }
+
+            ruleMob.innerHTML = `📘 ${q.rule}`;
+            scoreMob.textContent = score;
+            mistakeMob.textContent = mistakes;
+
+            mergeMob.disabled = true;
+            splitMob.disabled = true;
+            answered = true;
+            nextMob.disabled = false;
+        }
+
+        // --- переход к следующему ---
+        function goToNext() {
+            if (!answered) return;
+
+            if (currentIdx === total - 1) {
+                feedbackMob.innerHTML = `🎉 Итог: правильных — ${score}/${total}, ошибок — ${mistakes}.<br>${score === total ? '💎 Идеально!' : mistakes <= 3 ? '✋ Хорошо' : '📚 Повтори правила.'}`;
+                ruleMob.innerHTML = '🔄 Нажми "ЗАНОВО" для новой попытки.';
+                nextMob.disabled = true;
+                return;
+            }
+
+            currentIdx++;
+            renderQuestion();
+        }
+
+        // --- сброс ---
+        function resetGame() {
+            currentIdx = 0;
+            score = 0;
+            mistakes = 0;
+            answered = false;
+            renderQuestion();
+            nextMob.disabled = true;
+            feedbackMob.innerHTML = '🔍 Нажми на кнопку';
+            ruleMob.innerHTML = '👆 правило появится после ответа';
+        }
+
+        // --- слушатели (с поддержкой touch) ---
+        mergeMob.addEventListener('click', () => handleAnswer('merge'));
+        splitMob.addEventListener('click', () => handleAnswer('split'));
+        nextMob.addEventListener('click', goToNext);
+        resetMob.addEventListener('click', resetGame);
+
+        // первоначальный рендер
+        renderQuestion();
+
+        // отличная адаптация: при очень длинном нажатии ничего не выделяется (уже в css)
+    })();
+</script>
+</body>
+</html>
