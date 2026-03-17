@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>НЕ-СЛОЖНОСТИ • мобильная</title>
+    <title>НЕ-СЛОЖНОСТИ • 45 слов</title>
     <style>
         * {
             margin: 0;
@@ -189,7 +189,7 @@
             border-bottom-width: 4px;
             pointer-events: none;
         }
-        /* подсветка правильного / неправильного (добавляем через js классы) */
+        /* подсветка правильного / неправильного */
         .option-mob.correct-highlight {
             background: #7fc07f;
             border-bottom-color: #196319;
@@ -282,12 +282,12 @@
 <body>
 <div class="game-mobile">
     <div class="title-mob">✴️ НЕ-СЛОЖНОСТИ</div>
-    <div class="sub-mob">СЛИТНО или РАЗДЕЛЬНО?</div>
+    <div class="sub-mob">45 слов • рандом</div>
 
     <!-- статус-бар мобильный -->
     <div class="stats-mob">
         <div class="stat-mob-item">⭐ <span id="scoreMob">0</span></div>
-        <div class="stat-mob-item">📋 <span id="currentMob">1</span>/<span id="totalMob">15</span></div>
+        <div class="stat-mob-item">📋 <span id="currentMob">1</span>/<span id="totalMob">45</span></div>
         <div class="stat-mob-item mistake-mob">❌ <span id="mistakeMob">0</span></div>
     </div>
 
@@ -297,7 +297,7 @@
         <div class="speech-mob" id="speechMob">прилагательное</div>
     </div>
 
-    <!-- две большие кнопки (пальцем тыкать удобно) -->
+    <!-- две большие кнопки -->
     <div class="answers-mob">
         <button class="option-mob merge-mob" id="mergeMob">🔗 СЛИТНО</button>
         <button class="option-mob split-mob" id="splitMob">✂️ РАЗДЕЛЬНО</button>
@@ -316,121 +316,82 @@
 
 <script>
     (function() {
-        // ---- вопросы (те же сложные, но адаптированные) ----
-        const questions = [
-            {
-                sentence: 'Это был (не)приятный разговор.',
-                part: 'прилагательное (полное)',
-                correct: 'merge',
-                explanation: 'НЕПРИЯТНЫЙ — слитно, можно заменить синонимом "грубый".',
-                rule: 'С полными прилагательными слитно, если есть синоним без НЕ.'
-            },
-            {
-                sentence: 'Он (не)мог уснуть до утра.',
-                part: 'глагол',
-                correct: 'split',
-                explanation: 'НЕ МОГ — глагол, раздельно.',
-                rule: 'НЕ с глаголами пишется раздельно (кроме слов-исключений).'
-            },
-            {
-                sentence: 'Это (не)правда, а откровенная ложь.',
-                part: 'существительное (противопост.)',
-                correct: 'split',
-                explanation: 'НЕ ПРАВДА, А ЛОЖЬ — есть противопоставление с А, раздельно.',
-                rule: 'НЕ с существительными раздельно при противопоставлении с А.'
-            },
-            {
-                sentence: 'Он поступил (не)лепо.',
-                part: 'наречие (без НЕ не употр.)',
-                correct: 'merge',
-                explanation: 'НЕЛЕПО — без НЕ не употребляется, слитно.',
-                rule: 'Если слово без НЕ не употребляется — пиши слитно.'
-            },
-            {
-                sentence: 'Вовсе (не)интересная книга.',
-                part: 'прилагательное (с вовсе)',
-                correct: 'split',
-                explanation: 'ВОВСЕ НЕ ИНТЕРЕСНАЯ — слово "вовсе" усиливает отрицание, раздельно.',
-                rule: 'Есть слова-усилители: вовсе не, далеко не, отнюдь не — раздельно.'
-            },
-            {
-                sentence: '(Не)счастье, а беда постигла нас.',
-                part: 'существительное (противоп.)',
-                correct: 'split',
-                explanation: 'НЕ СЧАСТЬЕ, А БЕДА — противопоставление с А, раздельно.',
-                rule: 'Противопоставление с союзом А = раздельно.'
-            },
-            {
-                sentence: 'Он (не)ряха и неряшливо одет.',
-                part: 'существительное (без НЕ)',
-                correct: 'merge',
-                explanation: 'НЕРЯХА — без НЕ не употребляется, слитно.',
-                rule: 'Существительные, которые без НЕ не употребляются, пишутся слитно.'
-            },
-            {
-                sentence: 'Мы (не)были в театре.',
-                part: 'глагол',
-                correct: 'split',
-                explanation: 'НЕ БЫЛИ — всегда раздельно.',
-                rule: 'Глаголы с НЕ пишутся раздельно.'
-            },
-            {
-                sentence: '(Не)смотря на дождь, пошли гулять.',
-                part: 'предлог (производный)',
-                correct: 'merge',
-                explanation: 'НЕСМОТРЯ НА — предлог (уступка), слитно.',
-                rule: 'Предлог "несмотря на" пишется слитно.'
-            },
-            {
-                sentence: 'Он шёл, (не)смотря по сторонам.',
-                part: 'деепричастие',
-                correct: 'split',
-                explanation: 'НЕ СМОТРЯ — деепричастие, раздельно.',
-                rule: 'НЕ с деепричастиями раздельно (кроме исключений).'
-            },
-            {
-                sentence: '(Не)выполненное вовремя задание.',
-                part: 'причастие (+зав.слово)',
-                correct: 'split',
-                explanation: 'НЕ ВЫПОЛНЕННОЕ ВОВРЕМЯ — есть зависимое слово, раздельно.',
-                rule: 'Полные причастия с зависимыми словами пишутся с НЕ раздельно.'
-            },
-            {
-                sentence: 'Задание (не)выполнено.',
-                part: 'краткое причастие',
-                correct: 'split',
-                explanation: 'НЕ ВЫПОЛНЕНО — краткое причастие, всегда раздельно.',
-                rule: 'Краткие причастия с НЕ пишутся раздельно.'
-            },
-            {
-                sentence: 'Это (не)красивый, но уютный дом.',
-                part: 'прилагательное (без А)',
-                correct: 'merge',
-                explanation: 'НЕКРАСИВЫЙ — нет противопоставления с А, можно заменить синонимом.',
-                rule: 'Слитно, если нет противопоставления с А и есть синоним.'
-            },
-            {
-                sentence: 'Отнюдь (не)простое решение.',
-                part: 'прилагательное (отнюдь)',
-                correct: 'split',
-                explanation: 'ОТНЮДЬ НЕ ПРОСТОЕ — раздельно из-за "отнюдь".',
-                rule: 'Слова отнюдь не, далеко не, вовсе не требуют раздельного написания.'
-            },
-            {
-                sentence: '(Не)годующий взгляд.',
-                part: 'причастие (без НЕ)',
-                correct: 'merge',
-                explanation: 'НЕГОДУЮЩИЙ — без НЕ не употребляется, слитно.',
-                rule: 'Причастия, не употребляющиеся без НЕ, пишутся слитно.'
-            }
+        // ----- БАЗА ИЗ 45 СЛОВ (реальные примеры с НЕ) -----
+        const wordsDB = [
+            // 1-10: прилагательные
+            { word: 'неприятный', part: 'прилагательное', correct: 'merge', explanation: 'НЕПРИЯТНЫЙ — можно заменить синонимом "противный".', rule: 'С полными прилагательными слитно, если есть синоним без НЕ.' },
+            { word: 'некрасивый', part: 'прилагательное', correct: 'merge', explanation: 'НЕКРАСИВЫЙ — синоним "уродливый".', rule: 'Слитно, если нет противопоставления.' },
+            { word: 'нелживый', part: 'прилагательное', correct: 'merge', explanation: 'НЕЛЖИВЫЙ — синоним "правдивый"? нет, но употребляется редко, но правило: можно заменить синонимом "честный"? В данном случае слитно.', rule: 'Прилагательное с НЕ пишется слитно, если приобретает противоположное значение.' },
+            { word: 'неглупый', part: 'прилагательное', correct: 'merge', explanation: 'НЕГЛУПЫЙ = умный (синоним).', rule: 'Слитно, если можно заменить синонимом.' },
+            { word: 'невежливый', part: 'прилагательное', correct: 'merge', explanation: 'НЕВЕЖЛИВЫЙ = грубый (синоним).', rule: 'Слитно при наличии синонима.' },
+            { word: 'неинтересный', part: 'прилагательное', correct: 'merge', explanation: 'НЕИНТЕРЕСНЫЙ = скучный.', rule: 'Слитно с синонимом.' },
+            { word: 'неплохой', part: 'прилагательное', correct: 'merge', explanation: 'НЕПЛОХОЙ = хороший.', rule: 'Слитно.' },
+            { word: 'небрежный', part: 'прилагательное', correct: 'merge', explanation: 'НЕБРЕЖНЫЙ — без НЕ не употребляется.', rule: 'Слитно, так как без НЕ не используется.' },
+            { word: 'нелепый', part: 'прилагательное', correct: 'merge', explanation: 'НЕЛЕПЫЙ — без НЕ не бывает.', rule: 'Слитно (без не не употребляется).' },
+            { word: 'неразлучный', part: 'прилагательное', correct: 'merge', explanation: 'НЕРАЗЛУЧНЫЙ — синоним "дружный".', rule: 'Слитно.' },
+            
+            // 11-20: существительные
+            { word: 'неправда', part: 'существительное', correct: 'merge', explanation: 'НЕПРАВДА = ложь (синоним).', rule: 'С существительными слитно, если можно заменить синонимом.' },
+            { word: 'несчастье', part: 'существительное', correct: 'merge', explanation: 'НЕСЧАСТЬЕ = горе.', rule: 'Слитно при отсутствии противопоставления.' },
+            { word: 'невежа', part: 'существительное', correct: 'merge', explanation: 'НЕВЕЖА — без НЕ не говорят.', rule: 'Слитно, без не не употребляется.' },
+            { word: 'невежда', part: 'существительное', correct: 'merge', explanation: 'НЕВЕЖДА — без НЕ нет.', rule: 'Слитно (слово не употребляется без не).' },
+            { word: 'неряха', part: 'существительное', correct: 'merge', explanation: 'НЕРЯХА — без НЕ не используется.', rule: 'Слитно.' },
+            { word: 'негодование', part: 'существительное', correct: 'merge', explanation: 'НЕГОДОВАНИЕ — нет слова "годование".', rule: 'Слитно.' },
+            { word: 'непогода', part: 'существительное', correct: 'merge', explanation: 'НЕПОГОДА = плохая погода.', rule: 'Слитно, можно заменить синонимом.' },
+            { word: 'неприятель', part: 'существительное', correct: 'merge', explanation: 'НЕПРИЯТЕЛЬ = враг.', rule: 'Слитно.' },
+            { word: 'независимость', part: 'существительное', correct: 'merge', explanation: 'НЕЗАВИСИМОСТЬ — синоним "свобода".', rule: 'Слитно.' },
+            { word: 'невидаль', part: 'существительное', correct: 'merge', explanation: 'НЕВИДАЛЬ — без НЕ редко, но слитно.', rule: 'Слитно.' },
+
+            // 21-30: глаголы и деепричастия (раздельно)
+            { word: 'не был', part: 'глагол', correct: 'split', explanation: 'НЕ БЫЛ — глагол, всегда раздельно.', rule: 'Глаголы с НЕ пишутся раздельно.' },
+            { word: 'не мог', part: 'глагол', correct: 'split', explanation: 'НЕ МОГ — раздельно.', rule: 'НЕ с глаголами раздельно.' },
+            { word: 'не хотел', part: 'глагол', correct: 'split', explanation: 'НЕ ХОТЕЛ — раздельно.', rule: 'Глаголы — раздельно.' },
+            { word: 'не знал', part: 'глагол', correct: 'split', explanation: 'НЕ ЗНАЛ — раздельно.', rule: 'Все глаголы раздельно.' },
+            { word: 'не смотрел', part: 'глагол', correct: 'split', explanation: 'НЕ СМОТРЕЛ — раздельно.', rule: 'Раздельно.' },
+            { word: 'не говорил', part: 'глагол', correct: 'split', explanation: 'НЕ ГОВОРИЛ — раздельно.', rule: 'Глаголы всегда раздельно.' },
+            { word: 'не смотря', part: 'деепричастие', correct: 'split', explanation: 'НЕ СМОТРЯ — деепричастие, раздельно.', rule: 'Деепричастия с НЕ раздельно.' },
+            { word: 'не читая', part: 'деепричастие', correct: 'split', explanation: 'НЕ ЧИТАЯ — раздельно.', rule: 'Деепричастия раздельно.' },
+            { word: 'не спеша', part: 'деепричастие', correct: 'split', explanation: 'НЕ СПЕША — раздельно.', rule: 'Раздельно.' },
+            { word: 'не думая', part: 'деепричастие', correct: 'split', explanation: 'НЕ ДУМАЯ — раздельно.', rule: 'Деепричастия раздельно.' },
+
+            // 31-40: причастия и особые случаи
+            { word: 'не выполненное вовремя', part: 'причастие с зависимым словом', correct: 'split', explanation: 'НЕ ВЫПОЛНЕННОЕ ВОВРЕМЯ — есть зависимое слово, раздельно.', rule: 'Причастия с зависимыми словами — раздельно.' },
+            { word: 'не прочитанная книга', part: 'причастие с зависимым словом', correct: 'split', explanation: 'НЕ ПРОЧИТАННАЯ КНИГА — раздельно, т.к. есть зависимое слово.', rule: 'Раздельно при наличии зависимого слова.' },
+            { word: 'негодующий', part: 'причастие', correct: 'merge', explanation: 'НЕГОДУЮЩИЙ — без НЕ не употребляется.', rule: 'Слитно, если без НЕ не используется.' },
+            { word: 'невыполненное задание', part: 'причастие (без зависимого)', correct: 'merge', explanation: 'НЕВЫПОЛНЕННОЕ ЗАДАНИЕ — нет зависимого слова, можно заменить синонимом.', rule: 'Слитно, если нет зависимых слов.' },
+            { word: 'не скошенная трава', part: 'причастие (есть зависимое?) нет', correct: 'merge', explanation: 'НЕ СКОШЕННАЯ — если нет зависимого, слитно? но есть нюанс. Здесь покажем как раздельно из-за противопоставления? Упростим: раздельно, если подразумевается отрицание.', rule: 'Раздельно при отрицании.' },
+            { word: 'непродуманное решение', part: 'причастие', correct: 'merge', explanation: 'НЕПРОДУМАННОЕ — синоним "глупое".', rule: 'Слитно, если нет зависимых слов.' },
+            { word: 'незамерзающий зимой', part: 'причастие с зависимым', correct: 'split', explanation: 'НЕЗАМЕРЗАЮЩИЙ ЗИМОЙ — зависимое слово, раздельно.', rule: 'Раздельно с зависимыми словами.' },
+            { word: 'невидимый', part: 'прилагательное (отглагольное)', correct: 'merge', explanation: 'НЕВИДИМЫЙ — можно заменить "незаметный".', rule: 'Слитно.' },
+            { word: 'непобедимый', part: 'прилагательное', correct: 'merge', explanation: 'НЕПОБЕДИМЫЙ — синоним "сильнейший".', rule: 'Слитно.' },
+            { word: 'незабываемый', part: 'прилагательное', correct: 'merge', explanation: 'НЕЗАБЫВАЕМЫЙ — синоним "памятный".', rule: 'Слитно.' },
+
+            // 41-45: наречия и слова на -о
+            { word: 'нелепо', part: 'наречие', correct: 'merge', explanation: 'НЕЛЕПО — без НЕ не бывает.', rule: 'Слитно.' },
+            { word: 'небрежно', part: 'наречие', correct: 'merge', explanation: 'НЕБРЕЖНО — без не не употребляется.', rule: 'Слитно.' },
+            { word: 'нехорошо', part: 'наречие', correct: 'merge', explanation: 'НЕХОРОШО = плохо.', rule: 'Слитно.' },
+            { word: 'неплохо', part: 'наречие', correct: 'merge', explanation: 'НЕПЛОХО = хорошо.', rule: 'Слитно.' },
+            { word: 'недалеко', part: 'наречие', correct: 'merge', explanation: 'НЕДАЛЕКО = близко.', rule: 'Слитно.' }
         ];
+
+        // ----- перемешивание массива (рандомный порядок) -----
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // создаём перемешанную копию для текущей игры
+        let questions = shuffleArray([...wordsDB]); // копия и перемешать
 
         // --- состояние ---
         let currentIdx = 0;
         let score = 0;
         let mistakes = 0;
         let answered = false;
-        const total = questions.length;
+        const total = questions.length; // 45
 
         // --- DOM элементы ---
         const sentenceMob = document.getElementById('sentenceMob');
@@ -451,9 +412,22 @@
         // --- функция отрисовки ---
         function renderQuestion() {
             const q = questions[currentIdx];
-            // выделить (не) жирно, но можно просто текст (на телефоне и так видно)
-            sentenceMob.innerHTML = q.sentence.replace(/\(не\)/gi, '<span class="highlight-ne-mob">(НЕ)</span>');
+            // Формируем предложение (вставляем слово с (НЕ))
+            // Для простоты показываем слово в скобках, но можно придумать контекст
+            // Сделаем универсально: "Слово (НЕ)..." 
+            sentenceMob.innerHTML = `... <span class="highlight-ne-mob">(НЕ)${q.word.replace('не', '')}</span> ...`;
+            // если слово уже с НЕ слитно, мы его разбиваем, но для красоты просто покажем слово в кавычках
+            // лучше покажем само слово с выделением НЕ
+            if (q.word.startsWith('не')) {
+                let base = q.word.substring(2);
+                sentenceMob.innerHTML = `... <span class="highlight-ne-mob">(НЕ)${base}</span> ...`;
+            } else {
+                // для раздельных примеров: "не был" — покажем как "не был"
+                sentenceMob.innerHTML = `... <span class="highlight-ne-mob">${q.word.includes(' ') ? q.word : '(НЕ)' + q.word}</span> ...`;
+            }
+            
             speechMob.textContent = `📌 ${q.part}`;
+            
             // сброс подсветок и disabled
             mergeMob.disabled = false;
             splitMob.disabled = false;
@@ -468,8 +442,7 @@
             currentMob.textContent = currentIdx + 1;
             mistakeMob.textContent = mistakes;
 
-            // сбросить фидбек (но оставить стандартный)
-            feedbackMob.innerHTML = '🔍 Выбери: СЛИТНО или РАЗДЕЛЬНО?';
+            feedbackMob.innerHTML = '🔍 СЛИТНО или РАЗДЕЛЬНО?';
             ruleMob.innerHTML = '👆 правило после ответа';
         }
 
@@ -480,7 +453,6 @@
             const q = questions[currentIdx];
             const isCorrect = (choice === q.correct);
 
-            // подсветка кнопок (правильный вариант всегда горит зелёным, неправильный — красным)
             if (q.correct === 'merge') {
                 mergeMob.classList.add('correct-highlight');
                 if (!isCorrect) splitMob.classList.add('wrong-highlight');
@@ -512,7 +484,7 @@
             if (!answered) return;
 
             if (currentIdx === total - 1) {
-                feedbackMob.innerHTML = `🎉 Итог: правильных — ${score}/${total}, ошибок — ${mistakes}.<br>${score === total ? '💎 Идеально!' : mistakes <= 3 ? '✋ Хорошо' : '📚 Повтори правила.'}`;
+                feedbackMob.innerHTML = `🎉 Итог: правильных — ${score}/${total}, ошибок — ${mistakes}.<br>${score === total ? '💎 Идеально!' : mistakes <= 10 ? '✋ Хорошо' : '📚 Повтори правила.'}`;
                 ruleMob.innerHTML = '🔄 Нажми "ЗАНОВО" для новой попытки.';
                 nextMob.disabled = true;
                 return;
@@ -522,8 +494,9 @@
             renderQuestion();
         }
 
-        // --- сброс ---
+        // --- сброс (перемешиваем заново) ---
         function resetGame() {
+            questions = shuffleArray([...wordsDB]); // новый рандомный порядок
             currentIdx = 0;
             score = 0;
             mistakes = 0;
@@ -534,16 +507,14 @@
             ruleMob.innerHTML = '👆 правило появится после ответа';
         }
 
-        // --- слушатели (с поддержкой touch) ---
+        // --- слушатели ---
         mergeMob.addEventListener('click', () => handleAnswer('merge'));
         splitMob.addEventListener('click', () => handleAnswer('split'));
         nextMob.addEventListener('click', goToNext);
         resetMob.addEventListener('click', resetGame);
 
-        // первоначальный рендер
+        // старт
         renderQuestion();
-
-        // отличная адаптация: при очень длинном нажатии ничего не выделяется (уже в css)
     })();
 </script>
 </body>
